@@ -82,6 +82,13 @@ module.exports = ({code, network, words}) => {
       throw new Error('InvalidDescriptionInPaymentRequest');
     }
 
+  case feature.username:
+    try {
+      return {username: wordsAsBuffer({trim, words}).toString('utf8')};
+    } catch (err) {
+      throw new Error('InvalidUsernameInPaymentRequest');
+    }
+
   case feature.fallback_address:
     try {
       return {

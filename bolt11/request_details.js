@@ -69,6 +69,10 @@ module.exports = ({destination, details, mtokens, network, timestamp}) => {
   const amounts = safeTokens({mtokens: mtokens || defaultMtokens});
 
   return details.reduce((sum, n) => {
+    if (!!n.username) {
+      sum.username = n.username;
+    }
+
     if (!!n.chain_address) {
       sum.chain_addresses.push(n.chain_address);
     }
