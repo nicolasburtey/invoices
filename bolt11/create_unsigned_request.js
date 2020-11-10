@@ -29,7 +29,7 @@ const {sha256} = crypto;
 
   {
     [chain_addresses]: [<Chain Address String>]
-    [uid]: [user id]
+    [username]: [username]
     [cltv_delta]: <CLTV Delta Number>
     [created_at]: <Invoice Creation Date ISO 8601 String>
     [description]: <Description String>
@@ -97,10 +97,10 @@ module.exports = args => {
 
   const fieldWords = flatten(keys(taggedFields).map(field => {
     switch (taggedFields[field].label) {
-    case 'uid':
+    case 'username':
       return {
         field,
-        words: descriptionAsWords({description: args.uid}).words,
+        words: descriptionAsWords({description: args.username}).words,
       }
 
     case 'description':
