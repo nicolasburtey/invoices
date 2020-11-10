@@ -29,6 +29,7 @@ const {sha256} = crypto;
 
   {
     [chain_addresses]: [<Chain Address String>]
+    [uid]: [user id]
     [cltv_delta]: <CLTV Delta Number>
     [created_at]: <Invoice Creation Date ISO 8601 String>
     [description]: <Description String>
@@ -61,7 +62,7 @@ const {sha256} = crypto;
   }
 */
 module.exports = args => {
-  if (args.description === undefined && !args.description_hash) {
+  if (!args.description && !args.description_hash) {
     throw new Error('ExpectedPaymentDescriptionOrDescriptionHashForPayReq');
   }
 
@@ -96,6 +97,12 @@ module.exports = args => {
 
   const fieldWords = flatten(keys(taggedFields).map(field => {
     switch (taggedFields[field].label) {
+    case 'uid':
+      return {
+        field,
+        words: descriptionAsWords({description: args.uid}).words,
+      }
+
     case 'description':
       return {
         field,
@@ -225,6 +232,9 @@ module.exports = args => {
 
     return [].concat(typeWord).concat(dataLengthPadded).concat(words);
   });
+
+  const util = require('util')
+  console.log(util.inspect({tagWords, fieldWords}, false, Infinity))
 
   const allTags = flatten(createdAtWords.concat(tagWords));
 
