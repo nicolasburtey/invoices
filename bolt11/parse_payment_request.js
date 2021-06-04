@@ -1,9 +1,9 @@
-const {decode} = require('bech32');
+const {bech32} = require('bech32');
 const {ecdsaRecover} = require('secp256k1');
 
 const decodePrefix = require('./decode_prefix');
 const fieldAsDetails = require('./field_as_details');
-const hrpAsTokens = require('./hrp_as_tokens');
+const hrpAsMtokens = require('./hrp_as_mtokens');
 const requestDetails = require('./request_details');
 const signatureFromWords = require('./signature_from_words');
 const signatureHashFromWords = require('./signature_hash_from_words');
@@ -11,6 +11,7 @@ const taggedFields = require('./tagged_fields');
 const wordsAsNumber = require('./words_as_number');
 
 const asHex = arr => Buffer.from(arr).toString('hex');
+const {decode} = bech32;
 const lnPrefix = 'ln';
 const maxRequestLength = Number.MAX_SAFE_INTEGER;
 const msPerSec = 1e3;
@@ -88,7 +89,7 @@ module.exports = ({request}) => {
       code: n.code,
       words: n.words,
     })),
-    mtokens: hrpAsTokens({amount, units}).mtokens,
+    mtokens: hrpAsMtokens({amount, units}).mtokens,
     timestamp: wordsAsNumber({words: timestampWords}) * msPerSec,
   });
 
